@@ -22,10 +22,7 @@ struct Modal {
         Reduce { state, action in
             switch action {
             case .showAlertButtonPressed:
-                state.alert = .init(
-                    title: { TextState("Alert") },
-                    actions: { ButtonState(action: .closeModalButtonPressed, label: { TextState("Close modal") }) }
-                )
+                state.alert = .alert
                 return .none
             default:
                 return .none
@@ -33,6 +30,16 @@ struct Modal {
         }
         .ifLet(\.$alert, action: \.alert)
         BindingReducer()
+    }
+}
+
+extension AlertState where Action == Modal.Action.Alert {
+    static let alert: Self = .init {
+        TextState("Alert")
+    } actions: {
+        ButtonState(action: .closeModalButtonPressed) {
+            TextState("Close modal")
+        }
     }
 }
 
@@ -50,3 +57,12 @@ struct ModalView: View {
         .alert($store.scope(state: \.alert, action: \.alert))
     }
 }
+
+#Preview {
+    ModalView(
+        store: .init(initialState: .init()) {
+            Modal()
+        }
+    )
+}
+

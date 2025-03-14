@@ -4,7 +4,11 @@ import SwiftUI
 struct ModalNavApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(
+                store: .init(initialState: .init()) {
+                    Content()
+                }
+            )
         }
     }
 }

@@ -3,11 +3,6 @@ import SwiftUI
 
 @Reducer
 struct Content {
-    @Reducer(state: .equatable)
-    enum Destination {
-        case modal(Modal)
-    }
-    
     @ObservableState
     struct State: Equatable {
         @Presents var destination: Destination.State?
@@ -17,6 +12,11 @@ struct Content {
         case showButtonPressed
         case destination(PresentationAction<Destination.Action>)
         case binding(BindingAction<State>)
+    }
+    
+    @Reducer
+    enum Destination {
+        case modal(Modal)
     }
     
     var body: some ReducerOf<Self> {
@@ -37,26 +37,25 @@ struct Content {
     }
 }
 
+extension Content.Destination.State: Equatable {}
+
 struct ContentView: View {
-    @Bindable var store = StoreOf<Content>(initialState: .init()) {
-        Content()
-    }
+    @Bindable var store: StoreOf<Content>
     
     var body: some View {
         Button("Show") {
             store.send(.showButtonPressed)
         }
-        .fullScreenCover(
-            item: $store.scope(
-                state: \.destination?.modal,
-                action: \.destination.modal
-            )
-        ) { store in
-            ModalView(store: store)
+        .fullScreenCover(item: $store.scope(state: \.destination?.modal, action: \.destination.modal)) { modal in
+            ModalView(store: modal)
         }
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(
+        store: .init(initialState: .init()) {
+            Content()
+        }
+    )
 }
