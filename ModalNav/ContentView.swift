@@ -8,10 +8,9 @@ struct Content {
         @Presents var destination: Destination.State?
     }
     
-    enum Action: BindableAction {
+    enum Action {
         case showButtonPressed
         case destination(PresentationAction<Destination.Action>)
-        case binding(BindingAction<State>)
     }
     
     @Reducer
@@ -25,15 +24,11 @@ struct Content {
             case .showButtonPressed:
                 state.destination = .modal(.init())
                 return .none
-            case .destination(.presented(.modal(.alert(.presented(.closeModalButtonPressed))))):
-                state.destination = nil
-                return .none
-            default:
+            case .destination:
                 return .none
             }
         }
         .ifLet(\.$destination, action: \.destination)
-        BindingReducer()
     }
 }
 
@@ -46,9 +41,10 @@ struct ContentView: View {
         Button("Show") {
             store.send(.showButtonPressed)
         }
-        .fullScreenCover(item: $store.scope(state: \.destination?.modal, action: \.destination.modal)) { modal in
-            ModalView(store: modal)
-        }
+        .fullScreenCover(
+            item: $store.scope(state: \.destination?.modal, action: \.destination.modal),
+            content: ModalView.init
+        )
     }
 }
 
