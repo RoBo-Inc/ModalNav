@@ -1,18 +1,25 @@
 import ComposableArchitecture
 import SwiftUI
+import TCAExtras
 
 @Reducer
 struct Modal {
     @ObservableState
     struct State: Equatable {
-        @Presents var alert: AlertState<Action.Alert>?
+        @Presents var alert: AlertState<Alert.Action>?
     }
     
     enum Action {
-        case showAlertButtonPressed(AlertState<Action.Alert>)
-        case alert(PresentationAction<Action.Alert>)
+        case showAlertButtonPressed(Alert)
+        case alert(PresentationAction<Alert.Action>)
+    }
+    
+    enum Alert: CaseIterable {
+        case closeModal
+        case doSmthElse
         
-        enum Alert {
+        @CasePathable
+        enum Action {
             case closeModalButtonPressed
             case doSmthElseButtonPressed
         }
@@ -21,8 +28,8 @@ struct Modal {
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .showAlertButtonPressed(let alertState):
-                state.alert = alertState
+            case .showAlertButtonPressed(let alert):
+                state.alert = .init(alert)
                 return .none
             case .alert(let action):
                 switch action {
@@ -43,26 +50,20 @@ struct Modal {
     }
 }
 
-extension AlertState where Action == Modal.Action.Alert {
-    static let closeModal: Self = .init {
-        TextState("Close Model Alert")
-    } actions: {
-        ButtonState(role: .cancel) {
-            TextState("Cancel")
-        }
-        ButtonState(action: .closeModalButtonPressed) {
-            TextState("Close modal")
+extension Modal.Alert: AlertStateConvertible {
+    var title: String {
+        switch self {
+        case .closeModal: "Close Model Alert"
+        case .doSmthElse: "Do Smth Else Alert"
         }
     }
-    
-    static let doSmthElse: Self = .init {
-        TextState("Do Smth Else Alert")
-    } actions: {
-        ButtonState(role: .cancel) {
-            TextState("Cancel")
-        }
-        ButtonState(action: .doSmthElseButtonPressed) {
-            TextState("Do smth else")
+}
+
+extension Modal.Alert.Action: AlertAction {
+    var buttonLabel: String {
+        switch self {
+        case .closeModalButtonPressed: "Close modal"
+        case .doSmthElseButtonPressed: "Do smth else"
         }
     }
 }

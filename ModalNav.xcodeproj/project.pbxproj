@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		305099342D8AB58B0032D764 /* TCAExtras in Frameworks */ = {isa = PBXBuildFile; productRef = 305099332D8AB58B0032D764 /* TCAExtras */; };
 		307157692D8460A60060BF78 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 307157682D8460A60060BF78 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				305099342D8AB58B0032D764 /* TCAExtras in Frameworks */,
 				307157692D8460A60060BF78 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +73,7 @@
 			name = ModalNav;
 			packageProductDependencies = (
 				307157682D8460A60060BF78 /* ComposableArchitecture */,
+				305099332D8AB58B0032D764 /* TCAExtras */,
 			);
 			productName = ModalNav;
 			productReference = 307157562D8460380060BF78 /* ModalNav.app */;
@@ -102,6 +105,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				307157672D8460A60060BF78 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				305099322D8AB58B0032D764 /* XCRemoteSwiftPackageReference "tca-utils" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 307157572D8460380060BF78 /* Products */;
@@ -335,6 +339,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		305099322D8AB58B0032D764 /* XCRemoteSwiftPackageReference "tca-utils" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://gitlab.com/krr-tca/tca-utils";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.1;
+			};
+		};
 		307157672D8460A60060BF78 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture.git";
@@ -346,6 +358,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		305099332D8AB58B0032D764 /* TCAExtras */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 305099322D8AB58B0032D764 /* XCRemoteSwiftPackageReference "tca-utils" */;
+			productName = TCAExtras;
+		};
 		307157682D8460A60060BF78 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 307157672D8460A60060BF78 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
